@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-    <h3>📂 Liste des archives</h3>
+    <h3>Liste des archives</h3>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <a href="{{ route('archives.create') }}" class="btn btn-primary">➕ Ajouter une archive</a>

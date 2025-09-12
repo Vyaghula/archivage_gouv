@@ -4,7 +4,7 @@
     </div>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a href="{{ url('/home') }}" class="nav-link">🏠 Tableau de bord</a>
+            <a href="{{ route('dashboard') }}" class="nav-link">🏠 Tableau de bord</a>
         </li>
 
         <li class="nav-item">

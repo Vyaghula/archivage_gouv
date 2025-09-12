@@ -46,7 +46,7 @@
             <h4 class="text-white mb-4">📂 SPN</h4>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a href="{{ url('/home') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}">
+                    <a href="{{ url('/dashboard') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}">
                         🏠 Tableau de bord
                     </a>
                 </li>
