@@ -36,21 +36,36 @@ class ArchiveController extends Controller
      */
     public function upload(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:pdf,doc,docx,jpg,png|max:20480',
-        ]);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
-        $path = $request->file('file')->store('archives', 'public');
+            // Vérifier la nomenclature : exactement 3 mots
+            $parts = preg_split('/\s+/', trim($filename));
 
-        $archive = Archive::create([
-            'titre'   => $request->file('file')->getClientOriginalName(),
-            'fichier' => $path,
-            'categorie' => 'non spécifiée',
-            'service' => 'non spécifié',
-        ]);
+            if (count($parts) !== 3) {
+                return response()->json([
+                    'error' => "❌ Le fichier doit respecter la nomenclature : Titre Catégorie Service"
+                ], 422);
+            }
 
-        return response()->json(['success' => true, 'file' => $archive]);
+            // Si valide → enregistrer le fichier
+            $path = $file->store('archives', 'public');
+
+            // Sauvegarde en base
+            \App\Models\Archive::create([
+                'titre'     => $parts[0],
+                'categorie' => $parts[1],
+                'service'   => $parts[2],
+                'fichier'   => $path,
+            ]);
+
+            return response()->json(['success' => "✅ Fichier bien enregistré !"]);
+        }
+
+        return response()->json(['error' => 'Aucun fichier reçu.'], 400);
     }
+
 
     /**
      * Show the form for creating a new resource.

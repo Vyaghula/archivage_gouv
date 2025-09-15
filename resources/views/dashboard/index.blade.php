@@ -44,22 +44,22 @@
         </div>
 
         <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header">🏢 Archives par service</div>
-                <div class="card-body">
-                    <canvas id="archivesByServiceChart"></canvas>
+            <div class="card shadow-sm" style="max-width: 350px; margin: 0 auto;">
+                <div class="card-header py-2" style="font-size: 1rem;">🏢 Archives par service</div>
+                <div class="card-body p-2">
+                    <canvas id="archivesByServiceChart" style="height:180px;"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="row g-4 mt-3">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header">📂 Archives par catégorie</div>
-                <div class="card-body">
-                    <canvas id="archivesByCategorieChart"></canvas>
-                </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm" style="max-width: 300px; margin: 0 auto;">
+            <div class="card-header py-2" style="font-size: 1rem;">📂 Archives par catégorie</div>
+            <div class="card-body p-2">
+                <canvas id="archivesByCategorieChart" style="height:150px;"></canvas>
+            </div>
             </div>
         </div>
     </div>
