@@ -34,36 +34,37 @@ class ArchiveController extends Controller
     /**
      * Upload a file (Dropzone).
      */
+
     public function upload(Request $request)
     {
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-
-            // Vérifier la nomenclature : exactement 3 mots
-            $parts = preg_split('/\s+/', trim($filename));
-
-            if (count($parts) !== 3) {
-                return response()->json([
-                    'error' => "❌ Le fichier doit respecter la nomenclature : Titre Catégorie Service"
-                ], 422);
-            }
-
-            // Si valide → enregistrer le fichier
-            $path = $file->store('archives', 'public');
-
-            // Sauvegarde en base
-            \App\Models\Archive::create([
-                'titre'     => $parts[0],
-                'categorie' => $parts[1],
-                'service'   => $parts[2],
-                'fichier'   => $path,
-            ]);
-
-            return response()->json(['success' => "✅ Fichier bien enregistré !"]);
+        if (! $request->hasFile('file')) {
+            return response()->json(['error' => 'Aucun fichier reçu.'], 400);
         }
 
-        return response()->json(['error' => 'Aucun fichier reçu.'], 400);
+        $file = $request->file('file');
+        $originalName = $file->getClientOriginalName();
+        $baseName = pathinfo($originalName, PATHINFO_FILENAME);
+
+        // Vérifier nomenclature : exactement 3 mots séparés par des espaces
+        $parts = preg_split('/\s+/', trim($baseName));
+        if (count($parts) !== 3) {
+            // message clair renvoyé au client
+            return response()->json([
+                'error' => "Le document : {$originalName} est rejeté en raison de la nomenclature de son nom"
+            ], 422);
+        }
+
+        // Optionnel : autres validations (taille, extension) déjà faites côté Dropzone
+        $path = $file->store('archives', 'public');
+
+        $archive = \App\Models\Archive::create([
+            'titre'     => $parts[0],
+            'categorie' => $parts[1],
+            'service'   => $parts[2],
+            'fichier'   => $path,
+        ]);
+
+        return response()->json(['success' => true, 'file' => $archive], 200);
     }
 
 

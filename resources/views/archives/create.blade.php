@@ -6,7 +6,7 @@
 
         <div class="row">
             {{-- Zone Dropzone --}}
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <form action="{{ route('archives.upload') }}" method="POST" class="dropzone dz-custom" id="my-dropzone"
                     enctype="multipart/form-data">
                     @csrf
@@ -19,7 +19,7 @@
             </div>
 
             {{-- Panneau progression --}}
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center bg-light">
                         <h6 class="mb-0">📋 Liste des fichiers</h6>
@@ -40,16 +40,17 @@
     {{-- Styles personnalisés --}}
     <style>
         .dz-custom {
-            border: 2px dashed #6c63ff;
-            border-radius: 12px;
+            border: 2px dashed #211fc6;
+            border-radius: 10px;
             background: #f9f9ff;
             padding: 60px;
             text-align: center;
             transition: background 0.3s ease-in-out;
+            height: 100%;
         }
 
         .dz-custom:hover {
-            background: #f0f0ff;
+            background: #adadef;
         }
 
         .dz-custom .dz-message h4 {
