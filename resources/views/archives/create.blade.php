@@ -85,12 +85,12 @@
                     let fileBlock = document.createElement("div");
                     fileBlock.classList.add("mb-3");
                     fileBlock.innerHTML = `
-                        <strong>${file.name}</strong>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
-                                 role="progressbar" style="width: 0%"></div>
-                        </div>
-                    `;
+                <strong>${file.name}</strong>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                         role="progressbar" style="width: 0%">0%</div>
+                </div>
+            `;
                     file.previewElement.fileBlock = fileBlock;
                     fileList.appendChild(fileBlock);
                 });
@@ -98,7 +98,9 @@
                 this.on("uploadprogress", function(file, progress) {
                     if (file.previewElement.fileBlock) {
                         let progressBar = file.previewElement.fileBlock.querySelector(".progress-bar");
-                        progressBar.style.width = progress + "%";
+                        let percent = Math.round(progress);
+                        progressBar.style.width = percent + "%";
+                        progressBar.innerText = percent + "%";
                     }
                 });
 
@@ -108,6 +110,7 @@
                         progressBar.classList.remove("bg-primary");
                         progressBar.classList.add("bg-success");
                         progressBar.style.width = "100%";
+                        progressBar.innerText = "100% ✅";
                     }
                 });
 
@@ -117,6 +120,7 @@
                         progressBar.classList.remove("bg-primary");
                         progressBar.classList.add("bg-danger");
                         progressBar.style.width = "100%";
+                        progressBar.innerText = "Erreur ❌";
                     }
                 });
             }
