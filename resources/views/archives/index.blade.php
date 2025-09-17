@@ -8,8 +8,8 @@
             <a href="{{ route('archives.create') }}" class="btn btn-primary">➕ Ajouter une archive</a>
             <!-- Zone de recherche -->
             <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un fichier..."
-                style="max-width: 300px;">
-        </div>
+                style="max-width: 300px; border-color: #720fd5; color: #28a745;">
+            </div>
 
         <div id="archivesTable">
             @include('archives.partials.table', ['archives' => $archives])
