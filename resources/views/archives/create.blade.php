@@ -82,10 +82,14 @@
                         fileList.innerHTML = "";
                     }
 
+                    // On prépare un bloc fichier avec zone pour message
                     let fileBlock = document.createElement("div");
                     fileBlock.classList.add("mb-3");
                     fileBlock.innerHTML = `
-                <strong>${file.name}</strong>
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>${file.name}</strong>
+                    <span class="file-message text-muted"></span>
+                </div>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
                          role="progressbar" style="width: 0%">0%</div>
@@ -107,20 +111,37 @@
                 this.on("success", function(file) {
                     if (file.previewElement.fileBlock) {
                         let progressBar = file.previewElement.fileBlock.querySelector(".progress-bar");
+                        let messageSpan = file.previewElement.fileBlock.querySelector(".file-message");
+
                         progressBar.classList.remove("bg-primary");
                         progressBar.classList.add("bg-success");
                         progressBar.style.width = "100%";
-                        progressBar.innerText = "100% ✅";
+                        progressBar.innerText = "100%";
+
+                        // Message succès à côté du nom
+                        messageSpan.classList.remove("text-muted");
+                        messageSpan.classList.add("text-success");
+                        messageSpan.innerText = "✅ Téléchargé avec succès";
                     }
                 });
 
-                this.on("error", function(file) {
+                this.on("error", function(file, response) {
                     if (file.previewElement.fileBlock) {
                         let progressBar = file.previewElement.fileBlock.querySelector(".progress-bar");
+                        let messageSpan = file.previewElement.fileBlock.querySelector(".file-message");
+
                         progressBar.classList.remove("bg-primary");
                         progressBar.classList.add("bg-danger");
                         progressBar.style.width = "100%";
-                        progressBar.innerText = "Erreur ❌";
+                        progressBar.innerText = "Erreur";
+
+                        // 🔥 Afficher message à côté du nom du fichier
+                        let message = (typeof response === "object" && response.error) ?
+                            response.error :
+                            "Erreur inconnue";
+                        messageSpan.classList.remove("text-muted");
+                        messageSpan.classList.add("text-danger");
+                        messageSpan.innerText = "❌ " + message;
                     }
                 });
             }
