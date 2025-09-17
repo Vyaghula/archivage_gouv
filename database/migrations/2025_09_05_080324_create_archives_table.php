@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('archives', function (Blueprint $table) {
-        $table->id();
-        $table->string('titre');
-        $table->string('categorie')->nullable();
-        $table->string('service')->nullable();
-        $table->string('fichier'); // chemin du fichier uploadé
-        $table->timestamps();
-    });
+            $table->id();
+            $table->string('titre');
+            $table->string('categorie');
+            $table->string('service');
+            $table->string('fichier');
+            $table->timestamps();
 
+            $table->unique(['titre', 'categorie', 'service']); // ✅ empêche les doublons
+        });
     }
 
     /**

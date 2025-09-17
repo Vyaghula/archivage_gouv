@@ -37,7 +37,7 @@ class ArchiveController extends Controller
 
     public function upload(Request $request)
     {
-        if (! $request->hasFile('file')) {
+        if (!$request->hasFile('file')) {
             return response()->json(['error' => 'Aucun fichier reçu.'], 400);
         }
 
@@ -45,19 +45,30 @@ class ArchiveController extends Controller
         $originalName = $file->getClientOriginalName();
         $baseName = pathinfo($originalName, PATHINFO_FILENAME);
 
-        // Vérifier nomenclature : exactement 3 mots séparés par des espaces
+        // Vérifier nomenclature : exactement 3 mots
         $parts = preg_split('/\s+/', trim($baseName));
         if (count($parts) !== 3) {
-            // message clair renvoyé au client
             return response()->json([
                 'error' => "Le document : {$originalName} est rejeté en raison de la nomenclature de son nom"
             ], 422);
         }
 
-        // Optionnel : autres validations (taille, extension) déjà faites côté Dropzone
+        // ✅ Vérifier doublon (Titre + Catégorie + Service déjà existant)
+        $exists = Archive::where('titre', $parts[0])
+            ->where('categorie', $parts[1])
+            ->where('service', $parts[2])
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'error' => "⚠️ Le fichier {$originalName} existe déjà dans la base."
+            ], 422);
+        }
+
+        // Enregistrer fichier
         $path = $file->store('archives', 'public');
 
-        $archive = \App\Models\Archive::create([
+        $archive = Archive::create([
             'titre'     => $parts[0],
             'categorie' => $parts[1],
             'service'   => $parts[2],
