@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,23 +23,28 @@
         body {
             font-family: 'Nunito', sans-serif;
         }
+
         .sidebar {
             width: 240px;
             min-height: 100vh;
         }
+
         .sidebar .nav-link {
             color: #ddd;
         }
+
         .sidebar .nav-link.active {
             background-color: #6c63ff;
             color: #fff;
         }
+
         .content {
             margin-left: 240px;
             padding: 20px;
         }
     </style>
 </head>
+
 <body>
     <div id="app" class="d-flex">
         {{-- Sidebar --}}
@@ -61,6 +67,11 @@
                         </ul>
                     </div>
                 </li>
+
+                <li>
+                    <li><a href="{{ route('personnes.create') }}" class="nav-link">➕ Ajouter une Personne</a></li>
+                </li>
+
                 <li>
                     <a href="#" class="nav-link text-white">📊 Rapports</a>
                 </li>
@@ -72,7 +83,8 @@
             {{-- Navbar --}}
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
                 <div class="container-fluid">
-                    <button class="btn btn-outline-secondary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+                    <button class="btn btn-outline-secondary d-md-none" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#sidebar">
                         ☰
                     </button>
                     <div class="ms-auto">
@@ -85,16 +97,18 @@
                             @endif
                         @else
                             <div class="dropdown">
-                                <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown">
                                     {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             🚪 {{ __('Logout') }}
                                         </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            class="d-none">
                                             @csrf
                                         </form>
                                     </li>
@@ -117,4 +131,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
     @yield('scripts')
 </body>
+
 </html>
