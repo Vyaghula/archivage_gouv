@@ -10,10 +10,11 @@ class Parcelle extends Model
     use HasFactory;
 
     protected $fillable = [
-        'numero_police',
-        'superficie',
-        'ville',
-        'lotissement',
-        'coordonnees_xy',
+        'personne_id', 'numero_police', 'superficie', 'ville', 'lotissement', 'coordonnees_xy'
     ];
+
+    public function personne()
+    {
+        return $this->belongsTo(Personne::class);
+    }
 }

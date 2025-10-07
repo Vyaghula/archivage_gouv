@@ -18,4 +18,9 @@ class Personne extends Model
         'nationalite',
         'genre',
     ];
+
+    public function getFullNameAttribute()
+    {
+        return trim("{$this->nom} {$this->postnom} {$this->prenom}");
+    }
 }

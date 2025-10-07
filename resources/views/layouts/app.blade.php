@@ -1,24 +1,21 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Bootstrap -->
+    <!-- 🔹 Styles externes -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Dropzone -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    <!-- Styles -->
+    <!-- 🔹 jQuery & Select2 (avant yield scripts) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJ+Y4h3fZ+6qF4u5r8qfL1x2k6Kp0f0g1c4jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <style>
         body {
             font-family: 'Nunito', sans-serif;
@@ -52,11 +49,12 @@
             <h4 class="text-white mb-4">📂 SPN</h4>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a href="{{ url('/dashboard') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}">
+                    <a href="{{ url('/dashboard') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
                         🏠 Tableau de bord
                     </a>
                 </li>
-                <li>
+
+                <li class="nav-item">
                     <a class="nav-link text-white" data-bs-toggle="collapse" href="#archivesMenu" role="button">
                         📑 Archivage
                     </a>
@@ -68,13 +66,10 @@
                     </div>
                 </li>
 
-                <li>
-                    <li><a href="{{ route('personnes.create') }}" class="nav-link">➕ Ajouter une Personne</a></li>
-                </li>
-
-                <li>
-                    <a href="#" class="nav-link text-white">📊 Rapports</a>
-                </li>
+                <li><a href="{{ route('personnes.create') }}" class="nav-link text-white">👥 Personne</a></li>
+                <li><a href="{{ route('parcelles.create') }}" class="nav-link text-white">🏘 Parcelle</a></li>
+                <li><a href="#" class="nav-link text-white">🏢 AutoBat</a></li>
+                <li><a href="#" class="nav-link text-white">📊 Rapports</a></li>
             </ul>
         </nav>
 
@@ -83,32 +78,26 @@
             {{-- Navbar --}}
             <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
                 <div class="container-fluid">
-                    <button class="btn btn-outline-secondary d-md-none" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#sidebar">
-                        ☰
-                    </button>
                     <div class="ms-auto">
                         @guest
                             @if (Route::has('login'))
-                                <a class="btn btn-outline-primary" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="btn btn-outline-primary" href="{{ route('login') }}">Login</a>
                             @endif
                             @if (Route::has('register'))
-                                <a class="btn btn-outline-success" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <a class="btn btn-outline-success" href="{{ route('register') }}">Register</a>
                             @endif
                         @else
                             <div class="dropdown">
-                                <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown">
+                                <a class="btn btn-outline-dark dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                     {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            🚪 {{ __('Logout') }}
+                                            🚪 Déconnexion
                                         </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                            class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                             @csrf
                                         </form>
                                     </li>
@@ -126,10 +115,11 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- 🔹 Scripts Bootstrap & Dropzone -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
+
+    <!-- 🔹 Scripts spécifiques aux pages -->
     @yield('scripts')
 </body>
-
 </html>

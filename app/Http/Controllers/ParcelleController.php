@@ -15,8 +15,10 @@ class ParcelleController extends Controller
 
     public function create()
     {
-        return view('parcelles.create');
+        $personnes = \App\Models\Personne::orderBy('nom')->get();
+        return view('parcelles.create', compact('personnes'));
     }
+
 
     public function store(Request $request)
     {
@@ -56,5 +58,26 @@ class ParcelleController extends Controller
     {
         $parcelle->delete();
         return redirect()->route('parcelles.index')->with('success', 'Parcelle supprimée.');
+    }
+
+    //metode de recherche
+    public function search(Request $request)
+    {
+        $term = $request->get('term', '');
+
+        $results = \App\Models\Personne::where('nom', 'like', "%{$term}%")
+            ->orWhere('postnom', 'like', "%{$term}%")
+            ->orWhere('prenom', 'like', "%{$term}%")
+            ->limit(10)
+            ->get(['id', 'nom', 'postnom', 'prenom']);
+
+        $formatted = $results->map(function ($p) {
+            return [
+                'id' => $p->id,
+                'text' => "{$p->nom} {$p->postnom} {$p->prenom}"
+            ];
+        });
+
+        return response()->json($formatted);
     }
 }

@@ -24,14 +24,15 @@ class PersonneController extends Controller
             'nom' => 'required|string|max:255',
             'postnom' => 'nullable|string|max:255',
             'prenom' => 'nullable|string|max:255',
-            'telephone' => 'nullable|string|max:20',
+            'telephone' => 'nullable|string|max:50',
             'adresse' => 'nullable|string|max:255',
             'nationalite' => 'nullable|string|max:100',
-            'genre' => 'nullable|in:Homme,Femme',
+            'genre' => 'required|in:M,F',
         ]);
 
         Personne::create($request->all());
-        return redirect()->route('personnes.index')->with('success', 'Personne enregistrée avec succès.');
+
+        return redirect()->route('personnes.index')->with('success', 'Personne ajoutée avec succès.');
     }
 
     public function show(Personne $personne)
@@ -48,6 +49,7 @@ class PersonneController extends Controller
     {
         $request->validate([
             'nom' => 'required|string|max:255',
+            'genre' => 'required|in:M,F',
         ]);
 
         $personne->update($request->all());
@@ -58,5 +60,26 @@ class PersonneController extends Controller
     {
         $personne->delete();
         return redirect()->route('personnes.index')->with('success', 'Personne supprimée.');
+    }
+
+    /** 🔍 Recherche AJAX pour Select2 */
+    public function search(Request $request)
+    {
+        $term = $request->get('term', '');
+
+        $results = Personne::where('nom', 'like', "%{$term}%")
+            ->orWhere('postnom', 'like', "%{$term}%")
+            ->orWhere('prenom', 'like', "%{$term}%")
+            ->limit(10)
+            ->get(['id', 'nom', 'postnom', 'prenom']);
+
+        $formatted = $results->map(function ($p) {
+            return [
+                'id' => $p->id,
+                'text' => trim("{$p->nom} {$p->postnom} {$p->prenom}")
+            ];
+        });
+
+        return response()->json($formatted);
     }
 }
