@@ -35,10 +35,12 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::put('/admin/user/{user}/role', [AdminController::class, 'updateRole'])->name('admin.updateRole');
 });
 
+// route AJAX pour Select2
+Route::get('/personnes/search', [PersonneController::class, 'search'])->name('personnes.search');
+
 Route::resource('personnes', PersonneController::class)->middleware('auth');
 Route::resource('parcelles', ParcelleController::class)->middleware('auth');
 Route::resource('autobats', AutoBatController::class)->middleware('auth');
 
-// route AJAX pour Select2
-Route::get('/personnes/search', [PersonneController::class, 'search'])->name('personnes.search');
+
 

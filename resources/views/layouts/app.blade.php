@@ -6,35 +6,26 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- 🔹 Styles externes -->
+    <!-- 🔹 Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-    <!-- 🔹 jQuery & Select2 (avant yield scripts) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJ+Y4h3fZ+6qF4u5r8qfL1x2k6Kp0f0g1c4jk=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
         body {
             font-family: 'Nunito', sans-serif;
         }
-
         .sidebar {
             width: 240px;
             min-height: 100vh;
         }
-
         .sidebar .nav-link {
             color: #ddd;
         }
-
         .sidebar .nav-link.active {
             background-color: #6c63ff;
             color: #fff;
         }
-
         .content {
             margin-left: 240px;
             padding: 20px;
@@ -48,13 +39,8 @@
         <nav class="sidebar bg-dark p-3 position-fixed">
             <h4 class="text-white mb-4">📂 SPN</h4>
             <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a href="{{ url('/dashboard') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
-                        🏠 Tableau de bord
-                    </a>
-                </li>
-
-                <li class="nav-item">
+                <li><a href="{{ url('/dashboard') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">🏠 Tableau de bord</a></li>
+                <li>
                     <a class="nav-link text-white" data-bs-toggle="collapse" href="#archivesMenu" role="button">
                         📑 Archivage
                     </a>
@@ -65,7 +51,6 @@
                         </ul>
                     </div>
                 </li>
-
                 <li><a href="{{ route('personnes.create') }}" class="nav-link text-white">👥 Personne</a></li>
                 <li><a href="{{ route('parcelles.create') }}" class="nav-link text-white">🏘 Parcelle</a></li>
                 <li><a href="#" class="nav-link text-white">🏢 AutoBat</a></li>
@@ -94,7 +79,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             🚪 Déconnexion
                                         </a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -115,9 +100,20 @@
         </div>
     </div>
 
-    <!-- 🔹 Scripts Bootstrap & Dropzone -->
+    <!-- 🔹 Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
+
+    <!-- 🔹 CSRF Token pour AJAX -->
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 
     <!-- 🔹 Scripts spécifiques aux pages -->
     @yield('scripts')
